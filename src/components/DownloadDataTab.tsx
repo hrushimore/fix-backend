@@ -12,7 +12,7 @@ import { useAppointments } from '@/contexts/AppointmentsContext';
 import { useTally } from '@/contexts/TallyContext';
 import { useStaff } from '@/contexts/StaffContext';
 import { mockServices, mockCustomers } from '@/data/mockData';
-import { jsPDF } from 'jspdf';
+import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 // Extend the jsPDF type definitions
