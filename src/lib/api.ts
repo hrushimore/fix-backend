@@ -7,6 +7,8 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
   const url = `${API_BASE_URL}${endpoint}`;
   
   const config: RequestInit = {
+    // Add timeout to prevent hanging requests
+    signal: AbortSignal.timeout(10000),
     headers: {
       'Content-Type': 'application/json',
       ...options.headers,
@@ -18,14 +20,20 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
     const response = await fetch(url, config);
     
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
     }
     
     // Handle empty responses
     const text = await response.text();
     return text ? JSON.parse(text) : null;
   } catch (error) {
-    console.error(`API request failed for ${endpoint}:`, error);
+    if (error.name === 'AbortError') {
+      console.error(`API request timeout for ${endpoint}. Make sure the backend server is running.`);
+    } else if (error.message?.includes('Failed to fetch')) {
+      console.error(`Cannot connect to backend at ${url}. Make sure the Spring Boot server is running on port 8080.`);
+    } else {
+      console.error(`API request failed for ${endpoint}:`, error);
+    }
     throw error;
   }
 }

@@ -41,26 +41,34 @@ export function CustomersProvider({ children }: { children: ReactNode }) {
         
         if (useBackend) {
           // Load from backend API
-          const apiCustomers = await customerApi.getAll();
-          // Transform backend data to frontend format
-          const transformedCustomers = apiCustomers.map(customer => ({
-            ...customer,
-            id: customer.id.toString(),
-            gender: customer.gender.toLowerCase(),
-            lastVisit: customer.lastVisit || new Date().toISOString(),
-            preferredServices: customer.preferredServices || [],
-            notes: customer.notes || '',
-            photo: customer.photo || ''
-          }));
-          setCustomers(transformedCustomers);
+          try {
+            const apiCustomers = await customerApi.getAll();
+            // Transform backend data to frontend format
+            const transformedCustomers = apiCustomers.map(customer => ({
+              ...customer,
+              id: customer.id.toString(),
+              gender: customer.gender.toLowerCase(),
+              lastVisit: customer.lastVisit || new Date().toISOString(),
+              preferredServices: customer.preferredServices || [],
+              notes: customer.notes || '',
+              photo: customer.photo || ''
+            }));
+            setCustomers(transformedCustomers);
+          } catch (apiError) {
+            console.error('Error loading customers from API, falling back to browser storage:', apiError);
+            useBackend = false;
+            const dbCustomers = customerDb.getAll();
+            setCustomers(dbCustomers);
+          }
         } else {
           // Load from browser storage
           const dbCustomers = customerDb.getAll();
           setCustomers(dbCustomers);
         }
       } catch (error) {
-        console.error('Error loading customers from database:', error);
+        console.error('Error initializing database:', error);
         // Fallback to browser storage
+        useBackend = false;
         const dbCustomers = customerDb.getAll();
         setCustomers(dbCustomers);
       }

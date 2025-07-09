@@ -41,11 +41,23 @@ export async function initDatabase() {
   if (isBrowser) {
     try {
       // Try to connect to the backend API
-      await customerApi.getAll();
+      const response = await fetch('http://localhost:8080/api/customers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Add timeout to fail faster
+        signal: AbortSignal.timeout(5000)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Backend responded with status: ${response.status}`);
+      }
+      
       console.log('Connected to Spring Boot backend');
       return 'backend';
     } catch (error) {
-      console.warn('Backend not available, falling back to browser storage:', error);
+      console.warn('Backend not available, falling back to browser storage. Make sure to run "mvn spring-boot:run" in the backend directory.', error);
       // Initialize browser storage with mock data if empty
       await initBrowserStorage();
       console.log('Browser storage initialized');
