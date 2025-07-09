@@ -166,10 +166,10 @@ export default function Customers() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold">Customer Management</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-2xl lg:text-3xl font-bold">Customer Management</h1>
+          <p className="text-muted-foreground mt-1 lg:mt-2 text-sm lg:text-base">
             Manage customer records, history, and preferences
           </p>
         </div>
@@ -179,8 +179,8 @@ export default function Customers() {
 
       {/* Filters */}
       <Card className="bg-gradient-card border-border/50 shadow-card">
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
+        <CardContent className="pt-4 lg:pt-6">
+          <div className="flex flex-col lg:flex-row lg:items-center space-y-4 lg:space-y-0 lg:space-x-4">
             {/* Search */}
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -188,18 +188,18 @@ export default function Customers() {
                 placeholder="Search customers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 text-sm lg:text-base"
               />
             </div>
             
             {/* Sort Options */}
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center space-x-2">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+              <div className="flex items-center space-x-2 w-full sm:w-auto">
                 <Select 
                   value={genderFilter}
                   onValueChange={(value: GenderFilter) => setGenderFilter(value)}
                 >
-                  <SelectTrigger className="w-[120px]">
+                  <SelectTrigger className="w-full sm:w-[120px]">
                     <SelectValue placeholder="Gender" />
                   </SelectTrigger>
                   <SelectContent>
@@ -224,8 +224,8 @@ export default function Customers() {
                   </SelectContent>
                 </Select>
               </div>
-              <Filter className="h-4 w-4 text-muted-foreground" />
-              <div className="flex space-x-2">
+              <Filter className="h-4 w-4 text-muted-foreground hidden sm:block" />
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                 {[
                   { key: "name", label: "Name" },
                   { key: "visits", label: "Visits" },
@@ -236,6 +236,7 @@ export default function Customers() {
                     key={option.key}
                     variant={sortBy === option.key ? "default" : "outline"}
                     size="sm"
+                    className="text-xs lg:text-sm"
                     onClick={() => setSortBy(option.key as any)}
                   >
                     {option.label}
@@ -248,8 +249,8 @@ export default function Customers() {
       </Card>
 
       {/* View Toggle and Customer Count */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="text-sm text-muted-foreground">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-4">
+        <div className="text-xs lg:text-sm text-muted-foreground">
           Showing <span className="font-medium text-foreground">{filteredCustomers.length}</span> of <span className="font-medium text-foreground">{customers.length}</span> customers
         </div>
         <div className="flex items-center space-x-2">
@@ -257,7 +258,7 @@ export default function Customers() {
             variant={viewMode === 'grid' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setViewMode('grid')}
-            className="h-8 w-8 p-0"
+            className="h-7 w-7 lg:h-8 lg:w-8 p-0"
           >
             <Grid className="h-4 w-4" />
           </Button>
@@ -265,7 +266,7 @@ export default function Customers() {
             variant={viewMode === 'list' ? 'default' : 'outline'}
             size="sm"
             onClick={() => setViewMode('list')}
-            className="h-8 w-8 p-0"
+            className="h-7 w-7 lg:h-8 lg:w-8 p-0"
           >
             <List className="h-4 w-4" />
           </Button>
@@ -273,16 +274,16 @@ export default function Customers() {
       </div>
 
       {/* Customers Grid */}
-      <div className={viewMode === 'grid' ? 'grid grid-cols-1 lg:grid-cols-2 gap-6' : 'space-y-2'}>
+      <div className={viewMode === 'grid' ? 'grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6' : 'space-y-2'}>
         {filteredCustomers.map((customer) => {
           if (viewMode === 'list') {
             return (
               <Card key={customer.id} className="bg-card/50 dark:bg-card border-border/50 shadow-card hover:shadow-glow transition-all duration-300">
-                <CardContent className="p-4">
+                <CardContent className="p-3 lg:p-4">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-3 lg:space-x-4 flex-1 min-w-0">
                       <div 
-                        className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold overflow-hidden cursor-pointer"
+                        className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold overflow-hidden cursor-pointer flex-shrink-0"
                         onClick={(e) => customer.photo && handleImageClick(e, customer.photo, customer.name)}
                         onTouchEnd={(e) => customer.photo && handleImageClick(e, customer.photo, customer.name)}
                       >
@@ -300,32 +301,32 @@ export default function Customers() {
                           />
                         ) : null}
                         <div className="w-full h-full flex items-center justify-center" style={{ display: customer.photo ? 'none' : 'flex' }}>
-                          {customer.name.split(' ').map(n => n[0]).join('')}
+                          <span className="text-xs lg:text-sm">{customer.name.split(' ').map(n => n[0]).join('')}</span>
                         </div>
                       </div>
-                      <div>
-                        <div className="font-semibold">{customer.name}</div>
-                        <div className="flex items-center text-sm text-muted-foreground">
-                          <Phone className="h-3 w-3 mr-1" />
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold text-sm lg:text-base truncate">{customer.name}</div>
+                        <div className="flex items-center text-xs lg:text-sm text-muted-foreground">
+                          <Phone className="h-3 w-3 mr-1 flex-shrink-0" />
                           <span>{formatPhoneNumber(customer.phone)}</span>
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="font-semibold">{formatPrice(customer.totalSpent)}</div>
-                      <div className="text-sm text-muted-foreground">{customer.visitCount} visits</div>
-                      <div className="text-xs text-muted-foreground">Last: {formatDate(customer.lastVisit)}</div>
+                    <div className="text-right flex-shrink-0">
+                      <div className="font-semibold text-sm lg:text-base">{formatPrice(customer.totalSpent)}</div>
+                      <div className="text-xs lg:text-sm text-muted-foreground">{customer.visitCount} visits</div>
+                      <div className="text-xs text-muted-foreground hidden sm:block">Last: {formatDate(customer.lastVisit)}</div>
                     </div>
                   </div>
-                  <div className="mt-3 pt-3 border-t border-border/50">
-                    <div className="text-sm">
+                  <div className="mt-2 lg:mt-3 pt-2 lg:pt-3 border-t border-border/50">
+                    <div className="text-xs lg:text-sm">
                       <span className="text-muted-foreground">Preferred Services: </span>
-                      <span className="font-medium">{customer.preferredServices.join(', ')}</span>
+                      <span className="font-medium">{customer.preferredServices.slice(0, 2).join(', ')}{customer.preferredServices.length > 2 ? '...' : ''}</span>
                     </div>
                     {customer.notes && (
-                      <div className="text-sm mt-1">
+                      <div className="text-xs lg:text-sm mt-1">
                         <span className="text-muted-foreground">Notes: </span>
-                        <span>{customer.notes}</span>
+                        <span className="line-clamp-1">{customer.notes}</span>
                       </div>
                     )}
                   </div>
@@ -340,11 +341,11 @@ export default function Customers() {
           
           return (
             <Card key={customer.id} className="bg-card/50 dark:bg-card border-border/50 shadow-card hover:shadow-glow transition-all duration-300 group">
-              <CardHeader className="pb-4">
+              <CardHeader className="pb-3 lg:pb-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center space-x-3">
                     <div 
-                      className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold overflow-hidden cursor-pointer"
+                      className="w-10 h-10 lg:w-12 lg:h-12 rounded-full bg-gradient-primary flex items-center justify-center text-white font-bold overflow-hidden cursor-pointer"
                       onClick={(e) => customer.photo && handleImageClick(e, customer.photo, customer.name)}
                       onTouchEnd={(e) => customer.photo && handleImageClick(e, customer.photo, customer.name)}
                     >
@@ -362,12 +363,12 @@ export default function Customers() {
                         />
                       ) : null}
                       <div className="w-full h-full flex items-center justify-center" style={{ display: customer.photo ? 'none' : 'flex' }}>
-                        {customer.name.split(' ').map(n => n[0]).join('')}
+                        <span className="text-xs lg:text-sm">{customer.name.split(' ').map(n => n[0]).join('')}</span>
                       </div>
                     </div>
                     <div>
-                      <CardTitle className="text-lg">{customer.name}</CardTitle>
-                      <CardDescription className="flex items-center space-x-2">
+                      <CardTitle className="text-base lg:text-lg">{customer.name}</CardTitle>
+                      <CardDescription className="flex items-center space-x-2 text-xs lg:text-sm">
                         <Phone className="h-3 w-3" />
                         <span>{customer.phone}</span>
                       </CardDescription>
@@ -380,21 +381,21 @@ export default function Customers() {
                 </div>
               </CardHeader>
               
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3 lg:space-y-4">
                 {/* Stats Row */}
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div className="p-3 bg-accent/50 rounded-lg">
-                    <div className="text-lg font-bold text-primary">{customer.visitCount}</div>
+                <div className="grid grid-cols-3 gap-2 lg:gap-4 text-center">
+                  <div className="p-2 lg:p-3 bg-accent/50 rounded-lg">
+                    <div className="text-base lg:text-lg font-bold text-primary">{customer.visitCount}</div>
                     <div className="text-xs text-muted-foreground">Visits</div>
                   </div>
-                  <div className="p-3 bg-accent/50 rounded-lg">
-                    <div className="text-lg font-bold text-primary">
+                  <div className="p-2 lg:p-3 bg-accent/50 rounded-lg">
+                    <div className="text-base lg:text-lg font-bold text-primary">
                       ₹{customer.totalSpent.toLocaleString('en-IN')}
                     </div>
                     <div className="text-xs text-muted-foreground">Spent</div>
                   </div>
-                  <div className="p-3 bg-accent/50 rounded-lg">
-                    <div className="text-lg font-bold text-primary">
+                  <div className="p-2 lg:p-3 bg-accent/50 rounded-lg">
+                    <div className="text-base lg:text-lg font-bold text-primary">
                       {Math.floor((Date.now() - new Date(customer.lastVisit).getTime()) / (1000 * 60 * 60 * 24))}
                     </div>
                     <div className="text-xs text-muted-foreground">Days ago</div>
@@ -403,7 +404,7 @@ export default function Customers() {
 
                 {/* Preferred Services */}
                 <div>
-                  <div className="text-sm font-medium mb-2 flex items-center">
+                  <div className="text-xs lg:text-sm font-medium mb-2 flex items-center">
                     <Star className="h-4 w-4 mr-1 text-primary" />
                     Preferred Services
                   </div>
@@ -419,11 +420,11 @@ export default function Customers() {
                 {/* Recent Activity */}
                 {recentTransactions.length > 0 && (
                   <div>
-                    <div className="text-sm font-medium mb-2 flex items-center">
+                    <div className="text-xs lg:text-sm font-medium mb-2 flex items-center">
                       <Calendar className="h-4 w-4 mr-1 text-primary" />
                       Recent Activity
                     </div>
-                    <div className="space-y-2">
+                    <div className="space-y-1 lg:space-y-2">
                       {recentTransactions.map((transaction) => (
                         <div key={transaction.id} className="flex justify-between items-center text-xs p-2 bg-accent/30 rounded">
                           <div>
@@ -442,7 +443,7 @@ export default function Customers() {
                 {/* Notes */}
                 {customer.notes && (
                   <div>
-                    <div className="text-sm font-medium mb-1">Notes</div>
+                    <div className="text-xs lg:text-sm font-medium mb-1">Notes</div>
                     <p className="text-xs text-muted-foreground line-clamp-2">
                       {customer.notes}
                     </p>
@@ -450,11 +451,11 @@ export default function Customers() {
                 )}
 
                 {/* Actions */}
-                <div className="flex space-x-2 pt-2 border-t border-border/50">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 pt-2 border-t border-border/50">
                   <Button 
                     size="sm" 
                     variant="outline" 
-                    className="flex-1"
+                    className="flex-1 text-xs lg:text-sm"
                     onClick={() => navigate(`/customers/${customer.id}`)}
                   >
                     <User className="h-3 w-3 mr-1" />
@@ -463,7 +464,7 @@ export default function Customers() {
                   <Button 
                     size="sm" 
                     variant="salon" 
-                    className="flex-1"
+                    className="flex-1 text-xs lg:text-sm"
                     onClick={() => handleBookAppointment(customer.id)}
                   >
                     <Calendar className="h-3 w-3 mr-1" />
@@ -493,42 +494,42 @@ export default function Customers() {
       )}
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
         <Card className="bg-gradient-card border-border/50 shadow-soft">
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-primary">{customers.length}</div>
-            <div className="text-sm text-muted-foreground">Total Customers</div>
+          <CardContent className="p-3 lg:p-4 text-center">
+            <div className="text-xl lg:text-2xl font-bold text-primary">{customers.length}</div>
+            <div className="text-xs lg:text-sm text-muted-foreground">Total Customers</div>
           </CardContent>
         </Card>
         
         <Card className="bg-gradient-card border-border/50 shadow-soft">
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-primary">
+          <CardContent className="p-3 lg:p-4 text-center">
+            <div className="text-xl lg:text-2xl font-bold text-primary">
               {customers.filter(c => c.visitCount >= 10).length}
             </div>
-            <div className="text-sm text-muted-foreground">Loyal Customers</div>
+            <div className="text-xs lg:text-sm text-muted-foreground">Loyal Customers</div>
           </CardContent>
         </Card>
         
         <Card className="bg-gradient-card border-border/50 shadow-soft">
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-primary">
+          <CardContent className="p-3 lg:p-4 text-center">
+            <div className="text-xl lg:text-2xl font-bold text-primary">
               {customers.length > 0 
                 ? `₹${Math.round(customers.reduce((acc, c) => acc + c.totalSpent, 0) / customers.length)}`
                 : '0'}
             </div>
-            <div className="text-sm text-muted-foreground">Avg. Lifetime Value</div>
+            <div className="text-xs lg:text-sm text-muted-foreground">Avg. Lifetime Value</div>
           </CardContent>
         </Card>
         
         <Card className="bg-gradient-card border-border/50 shadow-soft">
-          <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-primary">
+          <CardContent className="p-3 lg:p-4 text-center">
+            <div className="text-xl lg:text-2xl font-bold text-primary">
               {customers.length > 0 
                 ? Math.round(customers.reduce((acc, c) => acc + c.visitCount, 0) / customers.length)
                 : '0'}
             </div>
-            <div className="text-sm text-muted-foreground">Avg. Visit Count</div>
+            <div className="text-xs lg:text-sm text-muted-foreground">Avg. Visit Count</div>
           </CardContent>
         </Card>
       </div>
