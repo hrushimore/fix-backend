@@ -56,11 +56,11 @@ export default function Layout() {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/10 overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/10">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -68,13 +68,13 @@ export default function Layout() {
       {/* Sidebar */}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 transform bg-gradient-card border-r border-border/50 shadow-card transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-auto",
+          "fixed inset-y-0 left-0 z-50 w-64 transform bg-gradient-card border-r border-border/50 shadow-card transition-transform duration-300 ease-in-out lg:translate-x-0",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="w-full border-b border-border/50 bg-black relative">
+          <div className="w-full border-b border-border/50 bg-black">
             <div className="w-full py-1 bg-black">
               <div className="relative overflow-hidden">
                 <style dangerouslySetInnerHTML={{
@@ -138,7 +138,7 @@ export default function Layout() {
                 <img 
                   src={`${import.meta.env.BASE_URL}logo1.png`} 
                   alt="Logo" 
-                  className="w-full h-[120px] lg:h-[160px] object-contain mx-auto drop-shadow-[0_0_15px_rgba(59,130,246,0.7)] hover:drop-shadow-[0_0_20px_rgba(59,130,246,1)] transition-all duration-300 logo-animation"
+                  className="w-full h-[160px] object-contain mx-auto drop-shadow-[0_0_15px_rgba(59,130,246,0.7)] hover:drop-shadow-[0_0_20px_rgba(59,130,246,1)] transition-all duration-300 logo-animation"
                   onError={(e) => {
                     console.error('Failed to load logo:', e);
                     const img = e.target as HTMLImageElement;
@@ -149,7 +149,7 @@ export default function Layout() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="lg:hidden absolute top-2 right-2 z-10"
+                  className="lg:hidden absolute top-2 right-2"
                   onClick={() => setSidebarOpen(false)}
                 >
                   <X className="h-4 w-4" />
@@ -159,7 +159,7 @@ export default function Layout() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-2 lg:p-4 space-y-1 lg:space-y-2">
+          <nav className="flex-1 p-4 space-y-2">
             {navigation.map((item) => {
               const isActive = location.pathname === item.href;
               return (
@@ -167,7 +167,7 @@ export default function Layout() {
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    "flex items-center space-x-3 px-3 lg:px-4 py-2 lg:py-3 rounded-lg transition-all duration-200 group text-sm lg:text-base",
+                    "flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 group",
                     isActive
                       ? "bg-gradient-primary text-primary-foreground shadow-glow"
                       : "text-muted-foreground hover:text-foreground hover:bg-accent/50 hover:shadow-soft"
@@ -175,18 +175,18 @@ export default function Layout() {
                   onClick={() => setSidebarOpen(false)}
                 >
                   <item.icon className={cn(
-                    "h-4 w-4 lg:h-5 lg:w-5 transition-transform duration-200",
+                    "h-5 w-5 transition-transform duration-200",
                     "group-hover:scale-110"
                   )} />
-                  <span className="font-medium text-sm lg:text-base">{item.name}</span>
+                  <span className="font-medium">{item.name}</span>
                 </Link>
               );
             })}
           </nav>
 
           {/* Footer */}
-          <div className="p-2 lg:p-4 border-t border-border/50">
-            <div className="text-xs text-muted-foreground text-center hidden lg:block">
+          <div className="p-4 border-t border-border/50">
+            <div className="text-xs text-muted-foreground text-center">
               SalonPro v1.0
             </div>
           </div>
@@ -194,25 +194,25 @@ export default function Layout() {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-64 min-h-screen">
+      <div className="lg:pl-64">
         {/* Top bar */}
-        <header className="bg-background/80 backdrop-blur-sm border-b border-border/50 px-3 lg:px-4 py-2 lg:py-3 sticky top-0 z-30">
+        <header className="bg-background/80 backdrop-blur-sm border-b border-border/50 px-4 py-3 sticky top-0 z-40">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden h-8 w-8"
+                className="lg:hidden"
                 onClick={() => setSidebarOpen(!sidebarOpen)}
               >
-                <Menu className="h-4 w-4" />
+                <Menu className="h-5 w-5" />
               </Button>
-              <h1 className="text-lg lg:text-xl font-bold text-primary truncate">
+              <h1 className="text-xl font-bold text-primary">
                 {navigation.find(nav => nav.href === location.pathname)?.name || 'Dashboard'}
               </h1>
             </div>
-            <div className="flex items-center space-x-2 lg:space-x-4">
-              <div className="text-xs lg:text-sm text-muted-foreground hidden sm:block">
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-muted-foreground">
                 {new Date().toLocaleDateString('en-US', { 
                   weekday: 'long', 
                   year: 'numeric', 
@@ -220,8 +220,8 @@ export default function Layout() {
                   day: 'numeric' 
                 })}
               </div>
-              <Button variant="outline" size="sm" className="hidden md:flex">
-                <Clock className="h-3 w-3 lg:h-4 lg:w-4 mr-1 lg:mr-2" />
+              <Button variant="outline" size="sm">
+                <Clock className="h-4 w-4 mr-2" />
                 {new Date().toLocaleTimeString('en-US', { 
                   hour: '2-digit', 
                   minute: '2-digit',
@@ -234,7 +234,7 @@ export default function Layout() {
         </header>
 
         {/* Page content */}
-        <main className="p-3 lg:p-6">
+        <main className="p-6">
           <Outlet />
         </main>
       </div>

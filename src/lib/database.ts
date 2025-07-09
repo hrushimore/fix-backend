@@ -6,32 +6,6 @@ import { customerApi, employeeApi, serviceApi, appointmentApi, tallyApi } from '
 // Check if we're in a browser environment
 const isBrowser = typeof window !== 'undefined';
 
-// Backend health check with better error handling
-async function checkBackendHealth() {
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
-    
-    const response = await fetch('http://localhost:8080/api/customers', {
-      method: 'HEAD', // Use HEAD to avoid downloading data
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-    
-    clearTimeout(timeoutId);
-    return response.ok;
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      console.warn('Backend health check timed out');
-    } else {
-      console.warn('Backend health check failed:', error.message);
-    }
-    return false;
-  }
-}
-
 // Browser storage keys
 const STORAGE_KEYS = {
   customers: 'salon_customers',
@@ -65,19 +39,25 @@ const browserStorage = {
 // Initialize database
 export async function initDatabase() {
   if (isBrowser) {
-    const isBackendHealthy = await checkBackendHealth();
-    
-    if (isBackendHealthy) {
-      console.log('Connected to Spring Boot backend');
-      console.log('✅ Backend Status: Online');
-      return 'backend';
-    } else {
-      console.warn('❌ Backend Status: Offline - Falling back to browser storage');
-      console.warn('To enable backend features:');
-      console.warn('1. Navigate to the backend directory: cd backend');
-      console.warn('2. Start the Spring Boot server: mvn spring-boot:run');
-      console.warn('3. Ensure MySQL is running with the salon_management database');
+    try {
+      // Try to connect to the backend API
+      const response = await fetch('http://localhost:8080/api/customers', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Add timeout to fail faster
+        signal: AbortSignal.timeout(5000)
+      });
       
+      if (!response.ok) {
+        throw new Error(`Backend responded with status: ${response.status}`);
+      }
+      
+      console.log('Connected to Spring Boot backend');
+      return 'backend';
+    } catch (error) {
+      console.warn('Backend not available, falling back to browser storage. Make sure to run "mvn spring-boot:run" in the backend directory.', error);
       // Initialize browser storage with mock data if empty
       await initBrowserStorage();
       console.log('Browser storage initialized');
@@ -96,7 +76,7 @@ async function initBrowserStorage() {
   const existingCustomers = browserStorage.get(STORAGE_KEYS.customers);
   
   if (existingCustomers.length === 0) {
-    console.log('📦 Initializing browser storage with mock data...');
+    console.log('Initializing browser storage with mock data...');
     
     // Import mock data
     const { mockCustomers, mockEmployees, mockServices, mockProducts } = await import('../data/mockData');
@@ -109,9 +89,7 @@ async function initBrowserStorage() {
     browserStorage.set(STORAGE_KEYS.appointments, []);
     browserStorage.set(STORAGE_KEYS.tally, []);
     
-    console.log('✅ Mock data loaded into browser storage');
-  } else {
-    console.log('📦 Browser storage already initialized');
+    console.log('Mock data loaded into browser storage');
   }
 }
 

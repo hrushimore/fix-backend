@@ -150,16 +150,16 @@ export default function Booking() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl lg:text-3xl font-bold">Book Appointment</h1>
-        <p className="text-muted-foreground mt-1 lg:mt-2 text-sm lg:text-base">
+        <h1 className="text-3xl font-bold">Book Appointment</h1>
+        <p className="text-muted-foreground mt-2">
           Choose your preferred service provider and book your appointment
         </p>
       </div>
 
       {/* Steps Indicator */}
-      <div className="flex items-center justify-center space-x-2 lg:space-x-4 mb-6 lg:mb-8 overflow-x-auto pb-2">
+      <div className="flex items-center justify-center space-x-4 mb-8">
         {steps.map((stepItem) => (
-          <div key={stepItem.number} className="flex items-center flex-shrink-0">
+          <div key={stepItem.number} className="flex items-center">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
               step >= stepItem.number 
                 ? 'bg-primary text-primary-foreground' 
@@ -167,13 +167,13 @@ export default function Booking() {
             }`}>
               {stepItem.number}
             </div>
-            <span className={`ml-1 lg:ml-2 text-xs lg:text-sm ${
+            <span className={`ml-2 text-sm ${
               step >= stepItem.number ? 'text-foreground' : 'text-muted-foreground'
-            } hidden sm:inline`}>
+            }`}>
               {stepItem.title}
             </span>
             {stepItem.number < 4 && (
-              <div className={`w-4 lg:w-8 h-0.5 mx-2 lg:mx-4 ${
+              <div className={`w-8 h-0.5 mx-4 ${
                 step > stepItem.number ? 'bg-primary' : 'bg-muted'
               }`} />
             )}
@@ -192,7 +192,7 @@ export default function Booking() {
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-0">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {mockServices.map((service) => (
                   <div
                     key={service.id}
@@ -206,10 +206,10 @@ export default function Booking() {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <h3 className="font-medium">{service.name}</h3>
-                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2 lg:line-clamp-1">
+                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
                           {service.description}
                         </p>
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 mt-1.5 space-y-1 sm:space-y-0">
+                        <div className="flex items-center space-x-3 mt-1.5">
                           <Badge variant="secondary" className="text-xs h-5">
                             <Clock className="h-2.5 w-2.5 mr-1" />
                             {service.duration}min
@@ -226,7 +226,7 @@ export default function Booking() {
               
               {selectedServices.length > 0 && (
                 <div className="mt-4 p-3 bg-accent/30 rounded-md">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+                  <div className="flex justify-between items-center">
                     <div>
                       <div className="text-sm font-medium">
                         {selectedServices.length} service{selectedServices.length > 1 ? 's' : ''} selected
@@ -246,7 +246,7 @@ export default function Booking() {
                 <Button 
                   onClick={() => setStep(2)}
                   disabled={selectedServices.length === 0}
-                  className="w-full sm:w-auto min-w-32"
+                  className="min-w-32"
                 >
                   Next
                 </Button>
@@ -296,7 +296,7 @@ export default function Booking() {
               {/* Customer Selection */}
               <div className="space-y-2">
                 <h3 className="font-semibold">Customer</h3>
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-accent/20 rounded-lg space-y-3 sm:space-y-0">
+                <div className="flex items-center justify-between p-4 bg-accent/20 rounded-lg">
                   {selectedCustomer ? (
                     <div className="flex items-center space-x-3">
                       <Avatar>
@@ -312,17 +312,17 @@ export default function Booking() {
                       </Avatar>
                       <div>
                         <p className="font-medium">{selectedCustomer.name}</p>
-                        <p className="text-xs lg:text-sm text-muted-foreground">{formatPhoneNumber(selectedCustomer.phone.replace(/\D/g,''))}</p>
+                        <p className="text-sm text-muted-foreground">{formatPhoneNumber(selectedCustomer.phone.replace(/\D/g,''))}</p>
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <p className="text-xs lg:text-sm text-muted-foreground">No customer selected</p>
+                      <p className="text-sm text-muted-foreground">No customer selected</p>
                     </div>
                   )}
                   <Dialog open={isCustomerDialogOpen} onOpenChange={setIsCustomerDialogOpen}>
                     <DialogTrigger asChild>
-                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
+                      <Button variant="outline">
                         <User className="h-4 w-4 mr-2" />
                         {selectedCustomer ? 'Change Customer' : 'Select Customer'}
                       </Button>
@@ -336,7 +336,7 @@ export default function Booking() {
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                           <Input
                             placeholder="Search customers..."
-                            className="pl-9 text-sm"
+                            className="pl-9"
                             value={customerSearch}
                             onChange={(e) => setCustomerSearch(e.target.value)}
                           />
@@ -367,10 +367,10 @@ export default function Booking() {
                                     </Avatar>
                                     <div>
                                       <p className="font-medium">{customer.name}</p>
-                                      <p className="text-xs lg:text-sm text-muted-foreground">{formatPhoneNumber(customer.phone.replace(/\D/g,''))}</p>
+                                      <p className="text-sm text-muted-foreground">{formatPhoneNumber(customer.phone.replace(/\D/g,''))}</p>
                                     </div>
                                   </div>
-                                  <div className="text-xs text-muted-foreground">
+                                  <div className="text-sm text-muted-foreground">
                                     {customer.visitCount} visits
                                   </div>
                                 </div>
@@ -379,7 +379,7 @@ export default function Booking() {
                         </div>
                         <AddCustomerButton 
                           variant="outline" 
-                          className="w-full text-sm"
+                          className="w-full"
                           onCustomerAdded={() => {
                             // Refresh the customers list after adding a new one
                             setCustomerSearch('');
@@ -396,50 +396,50 @@ export default function Booking() {
 
               {/* Services Summary */}
               <div>
-                <h3 className="font-semibold mb-3 text-sm lg:text-base">Services</h3>
+                <h3 className="font-semibold mb-3">Services</h3>
                 <div className="space-y-2">
                   {selectedServicesData.map((service) => (
                     <div key={service.id} className="flex justify-between items-center p-3 bg-accent/50 rounded-lg">
                       <div>
-                        <div className="font-medium text-sm lg:text-base">{service.name}</div>
-                        <div className="text-xs lg:text-sm text-muted-foreground">{service.duration} minutes</div>
+                        <div className="font-medium">{service.name}</div>
+                        <div className="text-sm text-muted-foreground">{service.duration} minutes</div>
                       </div>
-                      <div className="font-semibold text-sm lg:text-base">{formatPrice(service.price)}</div>
+                      <div className="font-semibold">{formatPrice(service.price)}</div>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Staff & Time Summary */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-semibold mb-3 text-sm lg:text-base">Staff Member</h3>
+                  <h3 className="font-semibold mb-3">Staff Member</h3>
                   <div className="flex items-center space-x-3 p-3 bg-accent/50 rounded-lg">
-                    <Avatar className="w-10 h-10 lg:w-12 lg:h-12">
+                    <Avatar className="w-12 h-12">
                       <AvatarImage src={selectedEmployeeData?.photo} alt={selectedEmployeeData?.name} />
                       <AvatarFallback>
                         {selectedEmployeeData?.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="font-medium text-sm lg:text-base">{selectedEmployeeData?.name}</div>
-                      <div className="text-xs lg:text-sm text-muted-foreground">{selectedEmployeeData?.role}</div>
+                      <div className="font-medium">{selectedEmployeeData?.name}</div>
+                      <div className="text-sm text-muted-foreground">{selectedEmployeeData?.role}</div>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="font-semibold mb-3 text-sm lg:text-base">Appointment Time</h3>
+                  <h3 className="font-semibold mb-3">Appointment Time</h3>
                   <div className="p-3 bg-accent/50 rounded-lg">
                     <div className="flex items-center space-x-2">
                       <Calendar className="h-4 w-4 text-primary" />
-                      <span className="font-medium text-sm lg:text-base">Today</span>
+                      <span className="font-medium">Today</span>
                     </div>
                     <div className="flex items-center space-x-2 mt-1">
                       <Clock className="h-4 w-4 text-primary" />
-                      <span className="font-medium text-sm lg:text-base">{selectedTime}</span>
+                      <span className="font-medium">{selectedTime}</span>
                     </div>
-                    <div className="text-xs lg:text-sm text-muted-foreground mt-1">
+                    <div className="text-sm text-muted-foreground mt-1">
                       Duration: {totalDuration} minutes
                     </div>
                   </div>
@@ -448,20 +448,20 @@ export default function Booking() {
 
               {/* Total */}
               <div className="border-t pt-4">
-                <div className="flex justify-between items-center text-lg lg:text-xl font-bold">
+                <div className="flex justify-between items-center text-xl font-bold">
                   <span>Total Amount</span>
                   <span className="text-primary">{formatPrice(totalPrice)}</span>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row justify-between mt-6 space-y-3 sm:space-y-0 sm:space-x-3">
-                <Button variant="outline" onClick={() => setStep(2)} className="w-full sm:w-auto">
+              <div className="flex justify-between mt-6">
+                <Button variant="outline" onClick={() => setStep(2)}>
                   Back
                 </Button>
                 <Button 
                   onClick={handleBooking} 
                   variant="salon" 
-                  className="w-full sm:w-auto min-w-32"
+                  className="min-w-32"
                   disabled={isBooking}
                 >
                   {isBooking ? 'Booking...' : 'Confirm Booking'}

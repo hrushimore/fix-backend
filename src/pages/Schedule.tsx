@@ -256,10 +256,10 @@ export default function Schedule() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
         <div>
-          <h1 className="text-2xl lg:text-3xl font-bold">Schedule Management</h1>
-          <p className="text-muted-foreground mt-1 lg:mt-2 text-sm lg:text-base">
+          <h1 className="text-3xl font-bold">Schedule Management</h1>
+          <p className="text-muted-foreground mt-2">
             Manage appointments and staff schedules
           </p>
         </div>
@@ -271,15 +271,15 @@ export default function Schedule() {
 
       {/* Date Navigation */}
       <Card className="bg-gradient-card border-border/50 shadow-card">
-        <CardContent className="pt-4 lg:pt-6">
+        <CardContent className="pt-6">
           <div className="flex items-center justify-between">
             <Button variant="outline" size="icon" onClick={() => navigateDate('prev')}>
               <ChevronLeft className="h-4 w-4" />
             </Button>
             
             <div className="text-center">
-              <h2 className="text-lg lg:text-xl font-bold">{formatDate(currentDate)}</h2>
-              <p className="text-xs lg:text-sm text-muted-foreground">
+              <h2 className="text-xl font-bold">{formatDate(currentDate)}</h2>
+              <p className="text-sm text-muted-foreground">
                 {viewMode === "week" ? "Week View" : "Day View"}
               </p>
             </div>
@@ -306,10 +306,10 @@ export default function Schedule() {
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
-              <div className="min-w-[600px] lg:min-w-[800px]">
+              <div className="min-w-[800px]">
                 {/* Simple Header */}
-                <div className="h-12 lg:h-14 border-b border-border/50 bg-muted/30 dark:bg-muted/50 flex items-center px-3 lg:px-4">
-                  <span className="font-medium text-foreground text-sm lg:text-base">Staff</span>
+                <div className="h-14 border-b border-border/50 bg-muted/30 dark:bg-muted/50 flex items-center px-4">
+                  <span className="font-medium text-foreground">Staff</span>
                 </div>
 
                 {/* Staff Rows - Only show available staff */}
@@ -323,19 +323,19 @@ export default function Schedule() {
                         )}
                         <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] border-b border-border/50 hover:bg-accent/20 transition-colors">
                           {/* Staff Info */}
-                          <div className="p-3 lg:p-4 flex items-center space-x-2 lg:space-x-3">
-                            <Avatar className="w-8 h-8 lg:w-10 lg:h-10">
+                          <div className="p-4 flex items-center space-x-3">
+                            <Avatar className="w-10 h-10">
                               <AvatarImage src={employee.photo} alt={employee.name} />
                               <AvatarFallback>
-                                <span className="text-xs lg:text-sm">{employee.name.split(' ').map(n => n[0]).join('')}</span>
+                                {employee.name.split(' ').map(n => n[0]).join('')}
                               </AvatarFallback>
                             </Avatar>
                             <div>
-                              <div className="font-medium text-sm lg:text-base">{employee.name}</div>
+                              <div className="font-medium">{employee.name}</div>
                               <div className="text-xs text-muted-foreground">{employee.role}</div>
                               <Badge 
                                 variant={employee.available ? "default" : "secondary"} 
-                                className="text-xs mt-1 hidden sm:inline-flex"
+                                className="text-xs mt-1"
                               >
                                 {employee.available ? 'Available' : 'Busy'}
                               </Badge>
@@ -343,30 +343,30 @@ export default function Schedule() {
                           </div>
 
                           {/* Time Slots */}
-                          <div className="grid grid-cols-6 sm:grid-cols-8 lg:grid-cols-15 min-h-[60px] lg:min-h-[80px]">
+                          <div className="grid grid-cols-8 lg:grid-cols-15 min-h-[80px]">
                             {timeSlots.map((slot, slotIndex) => {
                               const appointment = getAppointmentForSlot(employee.id, slot.start);
                               const slotKey = `slot-${employee.id}-${slot.start.replace(/[\s:]/g, '')}-${slotIndex}`;
                               
                               return (
-                                <div key={slotKey} className="border-l border-border/50 p-0.5 lg:p-1 relative group">
+                                <div key={slotKey} className="border-l border-border/50 p-1 relative group">
                                   {appointment ? (
-                                    <div className={`p-1 lg:p-2 rounded text-xs text-white ${getStatusColor(appointment.status)} h-full flex flex-col justify-between cursor-pointer hover:shadow-soft transition-all`}>
+                                    <div className={`p-2 rounded text-xs text-white ${getStatusColor(appointment.status)} h-full flex flex-col justify-between cursor-pointer hover:shadow-soft transition-all`}>
                                       <div>
-                                        <div className="font-medium text-xs opacity-90 mb-0.5 lg:mb-1 hidden sm:block">
+                                        <div className="font-medium text-xs opacity-90 mb-1">
                                           {slot.display}
                                         </div>
-                                        <div className="font-medium truncate text-xs">
+                                        <div className="font-medium truncate">
                                           {mockCustomers.find(c => c.id === appointment.customerId)?.name}
                                         </div>
-                                        <div className="text-xs opacity-90 truncate hidden lg:block">
+                                        <div className="text-xs opacity-90 truncate">
                                           {services.find(s => appointment.serviceIds.includes(s.id))?.name}
                                         </div>
                                       </div>
                                       <div className="flex justify-between items-end">
-                                        <span className="text-xs hidden sm:inline">{formatPrice(appointment.total)}</span>
+                                        <span className="text-xs">{formatPrice(appointment.total)}</span>
                                         <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                                          <Button size="icon" variant="ghost" className="h-3 w-3 lg:h-4 lg:w-4 text-white hover:bg-white/20 hidden lg:flex">
+                                          <Button size="icon" variant="ghost" className="h-4 w-4 text-white hover:bg-white/20">
                                             <Edit className="h-2 w-2" />
                                           </Button>
                                         </div>
@@ -375,14 +375,14 @@ export default function Schedule() {
                                   ) : (
                                     <div 
                                       onClick={() => toggleSlotAvailability(employee.id, slot.start)}
-                                      className={`h-full w-full rounded cursor-pointer transition-colors flex flex-col items-center justify-center p-0.5 lg:p-1 ${
+                                      className={`h-full w-full rounded cursor-pointer transition-colors flex flex-col items-center justify-center p-1 ${
                                         isSlotAvailable(employee.id, slot.start) 
                                           ? 'bg-green-50 hover:bg-green-100 dark:bg-green-900/20 dark:hover:bg-green-900/30 border border-green-200 dark:border-green-800/50' 
                                           : 'bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/30 border border-red-200 dark:border-red-800/50'
                                       }`}
                                     >
                                       <div className="flex flex-col items-center justify-center h-full">
-                                        <span className={`text-[8px] lg:text-[10px] font-medium mb-0.5 hidden sm:block ${
+                                        <span className={`text-[8px] font-medium mb-0.5 ${
                                           isSlotAvailable(employee.id, slot.start)
                                             ? 'text-green-700 dark:text-green-300'
                                             : 'text-red-700 dark:text-red-300'
@@ -390,7 +390,7 @@ export default function Schedule() {
                                           {slot.display}
                                         </span>
                                         <div className="flex items-center">
-                                          <span className={`text-[8px] lg:text-[9px] ${
+                                          <span className={`text-[9px] ${
                                             isSlotAvailable(employee.id, slot.start) 
                                               ? 'text-green-600 dark:text-green-400' 
                                               : 'text-red-600 dark:text-red-400'
@@ -409,7 +409,7 @@ export default function Schedule() {
                       </div>
                     ))
                 ) : (
-                  <div className="p-3 lg:p-4 text-center text-muted-foreground text-sm">
+                  <div className="p-4 text-center text-muted-foreground">
                     No available staff members
                   </div>
                 )}
@@ -419,16 +419,15 @@ export default function Schedule() {
         </Card>
 
         {/* Available Staff and Services */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Available Staff Card */}
           <Card className="bg-gradient-card border-border/50 shadow-card">
-            <CardHeader className="pb-2 lg:pb-3">
+            <CardHeader className="pb-3">
               <div className="flex justify-between items-center">
-                <CardTitle className="text-base lg:text-lg">Available Staff</CardTitle>
+                <CardTitle className="text-lg">Available Staff</CardTitle>
                 <Button 
                   variant={editStaffMode ? "default" : "ghost"} 
                   size="sm"
-                  className="text-xs lg:text-sm"
                   onClick={() => setEditStaffMode(!editStaffMode)}
                 >
                   {editStaffMode ? (
@@ -440,31 +439,31 @@ export default function Schedule() {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3 lg:space-y-4">
+            <CardContent className="space-y-4">
               {employees.map((employee) => (
                 <div 
                   key={employee.id} 
-                  className="group flex items-center justify-between p-2 lg:p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                  className="group flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex items-center space-x-3">
-                    <Avatar className="h-8 w-8 lg:h-9 lg:w-9">
+                    <Avatar className="h-9 w-9">
                       <AvatarImage src={employee.photo} alt={employee.name} />
                       <AvatarFallback>
-                        <span className="text-xs">{employee.name.split(' ').map(n => n[0]).join('')}</span>
+                        {employee.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="font-medium text-sm lg:text-base">{employee.name}</p>
+                      <p className="font-medium">{employee.name}</p>
                       <p className="text-xs text-muted-foreground">{employee.role}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-1 lg:space-x-2">
+                  <div className="flex items-center space-x-2">
                     {editStaffMode ? (
                       <>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 lg:h-8 px-1 lg:px-2 text-xs"
+                          className="h-8 px-2 text-xs"
                           onClick={() => {
                             updateEmployee(employee.id, {
                               ...employee,
@@ -472,15 +471,15 @@ export default function Schedule() {
                             });
                           }}
                         >
-                          <div className={`w-8 lg:w-10 h-4 lg:h-5 rounded-full relative transition-colors ${employee.available ? 'bg-primary' : 'bg-muted-foreground/20'}`}>
+                          <div className={`w-10 h-5 rounded-full relative transition-colors ${employee.available ? 'bg-primary' : 'bg-muted-foreground/20'}`}>
                             <div className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform ${employee.available ? 'translate-x-5' : ''}`} />
                           </div>
-                          <span className="ml-1 lg:ml-2 text-xs lg:text-sm hidden sm:inline">{employee.available ? 'Available' : 'Busy'}</span>
+                          <span className="ml-2">{employee.available ? 'Available' : 'Busy'}</span>
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7 lg:h-8 lg:w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                          className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (window.confirm(`Are you sure you want to remove ${employee.name}?`)) {
@@ -488,15 +487,15 @@ export default function Schedule() {
                             }
                           }}
                         >
-                          <Trash2 className="h-3 w-3 lg:h-4 lg:w-4" />
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-7 w-7 lg:h-8 lg:w-8"
+                          className="h-8 w-8"
                           onClick={() => handleEditStaff(employee)}
                         >
-                          <Edit className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
+                          <Edit className="h-3.5 w-3.5" />
                         </Button>
                       </>
                     ) : (
@@ -511,15 +510,14 @@ export default function Schedule() {
                 </div>
               ))}
               {showAddStaff ? (
-                <div className="mt-3 lg:mt-4 p-3 lg:p-4 bg-muted/30 rounded-lg">
+                <div className="mt-4 p-4 bg-muted/30 rounded-lg">
                   <div className="flex justify-between items-center mb-4">
-                    <h4 className="font-medium text-sm lg:text-base">
+                    <h4 className="font-medium">
                       {editingStaff ? 'Edit Staff Member' : 'Add New Staff Member'}
                     </h4>
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="h-6 w-6 lg:h-8 lg:w-8 p-0"
                       onClick={() => {
                         setShowAddStaff(false);
                         setEditingStaff(null);
@@ -535,13 +533,13 @@ export default function Schedule() {
                         });
                       }}
                     >
-                      <X className="h-3 w-3 lg:h-4 lg:w-4" />
+                      <X className="h-4 w-4" />
                     </Button>
                   </div>
-                  <form onSubmit={handleAddStaff} className="space-y-3 lg:space-y-4">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
+                  <form onSubmit={handleAddStaff} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="staffName" className="text-sm">Full Name</Label>
+                        <Label htmlFor="staffName">Full Name</Label>
                         <div className="relative">
                           <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
@@ -550,18 +548,18 @@ export default function Schedule() {
                             value={staffForm.name}
                             onChange={handleStaffInputChange}
                             placeholder="John Doe"
-                            className="pl-9 text-sm"
+                            className="pl-9"
                             required
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="staffRole" className="text-sm">Role</Label>
+                        <Label htmlFor="staffRole">Role</Label>
                         <Select 
                           value={staffForm.role}
                           onValueChange={(value) => setStaffForm({...staffForm, role: value})}
                         >
-                          <SelectTrigger className="w-full text-sm">
+                          <SelectTrigger className="w-full">
                             <Briefcase className="h-4 w-4 mr-2 text-muted-foreground" />
                             <SelectValue placeholder="Select role" />
                           </SelectTrigger>
@@ -578,9 +576,9 @@ export default function Schedule() {
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="staffEmail" className="text-sm">Email</Label>
+                        <Label htmlFor="staffEmail">Email</Label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
@@ -590,12 +588,12 @@ export default function Schedule() {
                             value={staffForm.email}
                             onChange={handleStaffInputChange}
                             placeholder="john@example.com"
-                            className="pl-9 text-sm"
+                            className="pl-9"
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="staffPhone" className="text-sm">Phone</Label>
+                        <Label htmlFor="staffPhone">Phone</Label>
                         <div className="relative">
                           <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
@@ -605,16 +603,16 @@ export default function Schedule() {
                             value={staffForm.phone}
                             onChange={handleStaffInputChange}
                             placeholder="+91 98765 43210"
-                            className="pl-9 text-sm"
+                            className="pl-9"
                             required
                           />
                         </div>
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="startTime" className="text-sm">Start Time</Label>
+                        <Label htmlFor="startTime">Start Time</Label>
                         <div className="relative">
                           <Clock3 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
@@ -623,13 +621,13 @@ export default function Schedule() {
                             type="time"
                             value={staffForm.startTime}
                             onChange={handleStaffInputChange}
-                            className="pl-9 text-sm"
+                            className="pl-9"
                             required
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="endTime" className="text-sm">End Time</Label>
+                        <Label htmlFor="endTime">End Time</Label>
                         <div className="relative">
                           <Clock4 className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                           <Input
@@ -638,7 +636,7 @@ export default function Schedule() {
                             type="time"
                             value={staffForm.endTime}
                             onChange={handleStaffInputChange}
-                            className="pl-9 text-sm"
+                            className="pl-9"
                             required
                           />
                         </div>
@@ -646,7 +644,7 @@ export default function Schedule() {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label className="text-sm">Specialties</Label>
+                      <Label>Specialties</Label>
                       <div className="flex flex-wrap gap-2">
                         {['Haircut', 'Coloring', 'Styling', 'Shaving', 'Facial', 'Manicure', 'Pedicure', 'Massage'].map(specialty => (
                           <Button
@@ -654,7 +652,7 @@ export default function Schedule() {
                             type="button"
                             variant={staffForm.specialties.includes(specialty) ? 'default' : 'outline'}
                             size="sm"
-                            className="h-7 lg:h-8 text-xs"
+                            className="h-8 text-xs"
                             onClick={() => {
                               setStaffForm(prev => ({
                                 ...prev,
@@ -672,9 +670,9 @@ export default function Schedule() {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label className="text-sm">Staff Photo</Label>
+                      <Label>Staff Photo</Label>
                       <div className="flex items-center space-x-4">
-                        <div className="relative h-16 w-16 lg:h-20 lg:w-20 rounded-full border-2 border-dashed border-muted-foreground/25 flex items-center justify-center overflow-hidden">
+                        <div className="relative h-20 w-20 rounded-full border-2 border-dashed border-muted-foreground/25 flex items-center justify-center overflow-hidden">
                           {staffForm.photo ? (
                             <img 
                               src={staffForm.photo} 
@@ -683,7 +681,7 @@ export default function Schedule() {
                             />
                           ) : (
                             <div className="text-center p-2">
-                              <User className="h-4 w-4 lg:h-6 lg:w-6 mx-auto text-muted-foreground" />
+                              <User className="h-6 w-6 mx-auto text-muted-foreground" />
                               <span className="text-xs text-muted-foreground">Preview</span>
                             </div>
                           )}
@@ -712,7 +710,6 @@ export default function Schedule() {
                             type="button"
                             variant="outline"
                             size="sm"
-                            className="text-xs lg:text-sm"
                             className="mt-1"
                             onClick={() => document.getElementById('staffPhoto')?.click()}
                           >
@@ -724,7 +721,6 @@ export default function Schedule() {
                               type="button"
                               variant="ghost"
                               size="sm"
-                              className="text-xs lg:text-sm"
                               className="mt-1 ml-2 text-destructive hover:text-destructive"
                               onClick={() => setStaffForm(prev => ({ ...prev, photo: '' }))}
                             >
@@ -736,12 +732,10 @@ export default function Schedule() {
                       </div>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-2 pt-2">
+                    <div className="flex justify-end space-x-2 pt-2">
                       <Button 
                         variant="outline" 
                         type="button"
-                        size="sm"
-                        className="text-xs lg:text-sm"
                         onClick={() => {
                           setShowAddStaff(false);
                           setEditingStaff(null);
@@ -759,7 +753,7 @@ export default function Schedule() {
                       >
                         Cancel
                       </Button>
-                      <Button type="submit" size="sm" className="text-xs lg:text-sm">
+                      <Button type="submit">
                         {editingStaff ? 'Update Staff' : 'Add Staff'}
                       </Button>
                     </div>
@@ -768,8 +762,7 @@ export default function Schedule() {
               ) : (
                 <Button 
                   variant="outline" 
-                  size="sm"
-                  className="w-full mt-2 text-xs lg:text-sm"
+                  className="w-full mt-2"
                   onClick={() => setShowAddStaff(true)}
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
@@ -781,13 +774,12 @@ export default function Schedule() {
 
           {/* Services Card */}
           <Card className="bg-gradient-card border-border/50 shadow-card">
-            <CardHeader className="pb-2 lg:pb-3">
+            <CardHeader className="pb-3">
               <div className="flex justify-between items-center">
-                <CardTitle className="text-base lg:text-lg">Services</CardTitle>
+                <CardTitle className="text-lg">Services</CardTitle>
                 <Button 
                   variant={editServicesMode ? "default" : "ghost"} 
                   size="sm"
-                  className="text-xs lg:text-sm"
                   onClick={() => setEditServicesMode(!editServicesMode)}
                 >
                   {editServicesMode ? (
@@ -799,18 +791,17 @@ export default function Schedule() {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3 lg:space-y-4">
+            <CardContent className="space-y-4">
               {editServicesMode && (
-                <div className="space-y-3 lg:space-y-4 p-3 lg:p-4 bg-muted/30 rounded-lg mb-3 lg:mb-4">
-                  <h4 className="font-medium text-sm lg:text-base">
+                <div className="space-y-4 p-4 bg-muted/30 rounded-lg mb-4">
+                  <h4 className="font-medium">
                     {editingService ? 'Edit Service' : 'Add New Service'}
                   </h4>
                   <div className="space-y-3">
                     <div>
-                      <Label htmlFor="serviceName" className="text-sm">Service Name</Label>
+                      <Label htmlFor="serviceName">Service Name</Label>
                       <Input
                         id="serviceName"
-                        className="text-sm"
                         value={editingService?.name || newService.name}
                         onChange={(e) => 
                           editingService
@@ -820,13 +811,12 @@ export default function Schedule() {
                         placeholder="e.g., Haircut & Styling"
                       />
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="duration" className="text-sm">Duration (minutes)</Label>
+                        <Label htmlFor="duration">Duration (minutes)</Label>
                         <Input
                           id="duration"
                           type="number"
-                          className="text-sm"
                           value={editingService?.duration || newService.duration}
                           onChange={(e) => {
                             const value = parseInt(e.target.value) || 0;
@@ -837,11 +827,10 @@ export default function Schedule() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="price" className="text-sm">Price (₹)</Label>
+                        <Label htmlFor="price">Price (₹)</Label>
                         <Input
                           id="price"
                           type="number"
-                          className="text-sm"
                           value={editingService?.price || newService.price}
                           onChange={(e) => {
                             const value = parseInt(e.target.value) || 0;
@@ -852,10 +841,8 @@ export default function Schedule() {
                         />
                       </div>
                     </div>
-                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 pt-2">
+                    <div className="flex space-x-2 pt-2">
                       <Button 
-                        size="sm"
-                        className="text-xs lg:text-sm"
                         onClick={() => {
                           if (editingService) {
                             setServices(services.map(s => 
@@ -887,8 +874,6 @@ export default function Schedule() {
                       {editingService && (
                         <Button 
                           variant="outline" 
-                          size="sm"
-                          className="text-xs lg:text-sm"
                           onClick={() => setEditingService(null)}
                         >
                           <X className="h-4 w-4 mr-1" />
@@ -903,13 +888,13 @@ export default function Schedule() {
                 {services.map((service) => (
                   <div 
                     key={service.id} 
-                    className="group flex items-center justify-between p-2 lg:p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
+                    className="group flex items-center justify-between p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
                   >
                     <div>
-                      <p className="font-medium text-sm lg:text-base">
+                      <p className="font-medium">
                         {service.name}
                         {editServicesMode && (
-                          <span className="ml-2 text-xs text-muted-foreground hidden lg:inline">
+                          <span className="ml-2 text-xs text-muted-foreground">
                             ID: {service.id.split('-')[1]}
                           </span>
                         )}
@@ -918,28 +903,28 @@ export default function Schedule() {
                         {service.duration} min • {formatPrice(service.price)}
                       </p>
                     </div>
-                    <div className="flex items-center space-x-1 lg:space-x-2">
+                    <div className="flex items-center space-x-2">
                       <Badge 
                         key={`category-${service.id}`}
                         variant="outline" 
-                        className="capitalize text-xs"
+                        className="capitalize"
                       >
                         {service.category}
                       </Badge>
                       {editServicesMode && (
-                        <div className="flex space-x-0.5 lg:space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7 lg:h-8 lg:w-8"
+                            className="h-8 w-8"
                             onClick={() => setEditingService(service)}
                           >
-                            <Edit className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
+                            <Edit className="h-3.5 w-3.5" />
                           </Button>
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-7 w-7 lg:h-8 lg:w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                            className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
                             onClick={() => {
                               if (window.confirm(`Are you sure you want to delete ${service.name}?`)) {
                                 setServices(services.filter(s => s.id !== service.id));
@@ -949,7 +934,7 @@ export default function Schedule() {
                               }
                             }}
                           >
-                            <Trash2 className="h-3 w-3 lg:h-3.5 lg:w-3.5" />
+                            <Trash2 className="h-3.5 w-3.5" />
                           </Button>
                         </div>
                       )}
@@ -960,8 +945,7 @@ export default function Schedule() {
               {!editServicesMode && (
                 <Button 
                   variant="outline" 
-                  size="sm"
-                  className="w-full mt-2 text-xs lg:text-sm"
+                  className="w-full mt-2"
                   onClick={() => setEditServicesMode(true)}
                 >
                   <Plus className="h-4 w-4 mr-2" />
